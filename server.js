@@ -21,7 +21,7 @@ const db = mysql
   })
   .promise();
 
-// Token check: user logged in hai ya nahi
+
 function requireLogin(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ") ? header.slice(7) : null;
@@ -39,7 +39,7 @@ function requireLogin(req, res, next) {
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/public/index.html"));
 
-// Register
+
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,7 +58,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Login
+
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -87,7 +87,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Budget get
+
 app.get("/budget/:userId", requireLogin, async (req, res) => {
   try {
     const [rows] = await db.query("SELECT amount FROM budgets WHERE user_id = ?", [req.userId]);
@@ -98,7 +98,7 @@ app.get("/budget/:userId", requireLogin, async (req, res) => {
   }
 });
 
-// Budget set
+
 app.post("/budget", requireLogin, async (req, res) => {
   try {
     const { amount } = req.body;
@@ -116,7 +116,7 @@ app.post("/budget", requireLogin, async (req, res) => {
   }
 });
 
-// Transaction save
+
 app.post("/transaction", requireLogin, async (req, res) => {
   try {
     const { type, title, amount, category, date } = req.body;
@@ -134,7 +134,7 @@ app.post("/transaction", requireLogin, async (req, res) => {
   }
 });
 
-// Transactions list
+
 app.get("/transactions/:userId", requireLogin, async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -148,7 +148,7 @@ app.get("/transactions/:userId", requireLogin, async (req, res) => {
   }
 });
 
-// Delete transaction
+
 app.delete("/transaction/:id", requireLogin, async (req, res) => {
   try {
     await db.query("DELETE FROM transactions WHERE id = ? AND user_id = ?", [
